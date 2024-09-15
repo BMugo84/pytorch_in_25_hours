@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <style>
+    text { font-family: Arial, sans-serif; font-size: 12px; }
+    .title { font-size: 14px; font-weight: bold; }
+  </style>
+  <text x="200" y="20" text-anchor="middle" class="title">Token Embedding</text>
+  
+  <!-- Input tokens -->
+  <rect x="10" y="40" width="80" height="30" fill="#f0f0f0" stroke="black"/>
+  <text x="50" y="60" text-anchor="middle">Token 1</text>
+  <rect x="10" y="80" width="80" height="30" fill="#f0f0f0" stroke="black"/>
+  <text x="50" y="100" text-anchor="middle">Token 2</text>
+  <rect x="10" y="120" width="80" height="30" fill="#f0f0f0" stroke="black"/>
+  <text x="50" y="140" text-anchor="middle">Token 3</text>
+  
+  <!-- Arrows -->
+  <line x1="100" y1="55" x2="150" y2="55" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="100" y1="95" x2="150" y2="95" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="100" y1="135" x2="150" y2="135" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Embedding vectors -->
+  <rect x="160" y="40" width="220" height="30" fill="#e6f3ff" stroke="black"/>
+  <text x="270" y="60" text-anchor="middle">[0.1, 0.5, -0.2, ..., 0.7]</text>
+  <rect x="160" y="80" width="220" height="30" fill="#e6f3ff" stroke="black"/>
+  <text x="270" y="100" text-anchor="middle">[-0.3, 0.2, 0.6, ..., -0.1]</text>
+  <rect x="160" y="120" width="220" height="30" fill="#e6f3ff" stroke="black"/>
+  <text x="270" y="140" text-anchor="middle">[0.4, -0.1, 0.3, ..., 0.5]</text>
+  
+  <!-- Arrowhead definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+</svg>
