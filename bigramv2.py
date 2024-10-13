@@ -102,6 +102,30 @@ class Head(nn.Module):
         out = wei @ v
         return out
 
+class MultiHeadattention(nn.Module):
+    """multiple heads of self-attention in parallel"""
+
+    def __init__(self, num_heads, head_size):
+        super().__init__()
+        self.heads = nn.ModuleList([Head(head_size=head_size) for _ in range(num_heads)])
+
+    def forward(self, x):
+        return torch.cat([h(x) for h in self.heads], dim=-1)
+
+class FeedForward(nn.Module):
+    """a simple linear layer followed by a non-linearity"""
+
+    def __init__(self, n_embd):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(n_embd, n_embd),
+            nn.ReLU(),
+        )
+    
+    def forward(self, x):
+        return self.net(x)
+
+
 
 class BigramLanguageModel(nn.Module):
     def __init__(self): # removing vocabsize since it's a global var
@@ -109,7 +133,8 @@ class BigramLanguageModel(nn.Module):
         # each token directly reads off the logits for the next token from a lookup table
         self.token_embedding_table = nn.Embedding(vocab_size, n_embd) # adding emedding to map from 65 to 32
         self.position_embedding_table = nn.Embedding(block_size, n_embd) # tracks the position of the embedding
-        self.sa_head = Head(n_embd)
+        self.sa_head = MultiHeadattention(4, n_embd//4) # ie 4 heads of 8-dimensional self-attention
+        self.ffwd = FeedForward(n_embd)
         self.lm_head = nn.Linear(n_embd, vocab_size) # remapping from 32 to 65
 
     def forward(self, idx, targets=None):
@@ -120,6 +145,7 @@ class BigramLanguageModel(nn.Module):
         pos_emb = self.position_embedding_table(torch.arange(T, device=device)) # T,C
         x = tok_emb + pos_emb
         x = self.sa_head(x)
+        x = self.ffwd(x)
         logits = self.lm_head(x)  # finding the prob of token+its position
 
         if targets is None:
